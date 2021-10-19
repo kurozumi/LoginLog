@@ -47,11 +47,11 @@ class Event implements EventSubscriberInterface
         $user = $event->getAuthenticationToken()->getUser();
 
         if ($user instanceof Member) {
-            logs('member-login')->info('成功', ['ログインID' => $user->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+            logs('member-login')->info('成功', ['ログインID' => $user->getUsername(), 'IPアドレス' => $request->getClientIp()]);
         }
 
         if ($user instanceof Customer) {
-            logs('customer-login')->info('成功', ['ログインID' => $user->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+            logs('customer-login')->info('成功', ['ログインID' => $user->getUsername(), 'IPアドレス' => $request->getClientIp()]);
         }
     }
 
@@ -61,11 +61,11 @@ class Event implements EventSubscriberInterface
         $token = $event->getAuthenticationToken();
 
         if ($this->context->isAdmin()) {
-            logs('member-login')->error('失敗', ['ログインID' => $token->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+            logs('member-login')->error('失敗', ['ログインID' => $token->getUsername(), 'IPアドレス' => $request->getClientIp()]);
         }
 
         if ($this->context->isFront()) {
-            logs('customer-login')->error('失敗', ['ログインID' => $token->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+            logs('customer-login')->error('失敗', ['ログインID' => $token->getUsername(), 'IPアドレス' => $request->getClientIp()]);
         }
     }
 }
