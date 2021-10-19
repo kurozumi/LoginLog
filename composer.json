@@ -1,7 +1,7 @@
 {
   "name": "ec-cube/loginlog",
   "version": "1.0.0",
-  "description": "LoginLog",
+  "description": "ログインログ",
   "type": "eccube-plugin",
   "require": {
       "ec-cube/plugin-installer": "~0.0.6 || ^2.0"

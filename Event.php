@@ -2,6 +2,7 @@
 
 namespace Plugin\LoginLog;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Member;
 use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -46,7 +47,11 @@ class Event implements EventSubscriberInterface
         $user = $event->getAuthenticationToken()->getUser();
 
         if ($user instanceof Member) {
-            logs('member-login-history')->info('成功', ['ログインID' => $user->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+            logs('member-login')->info('成功', ['ログインID' => $user->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+        }
+
+        if ($user instanceof Customer) {
+            logs('customer-login')->info('成功', ['ログインID' => $user->getUsername(), 'IDアドレス' => $request->getClientIp()]);
         }
     }
 
@@ -56,7 +61,11 @@ class Event implements EventSubscriberInterface
         $token = $event->getAuthenticationToken();
 
         if ($this->context->isAdmin()) {
-            logs('member-login-history')->error('失敗', ['ログインID' => $token->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+            logs('member-login')->error('失敗', ['ログインID' => $token->getUsername(), 'IDアドレス' => $request->getClientIp()]);
+        }
+
+        if ($this->context->isFront()) {
+            logs('customer-login')->error('失敗', ['ログインID' => $token->getUsername(), 'IDアドレス' => $request->getClientIp()]);
         }
     }
 }
