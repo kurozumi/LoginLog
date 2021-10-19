@@ -1,0 +1,21 @@
+monolog:
+  channels: ['member-login-history']
+  handlers:
+    member_login_history:
+      type: fingers_crossed
+      action_level: error
+      passthru_level: info
+      handler: member_login_history_rotating_file
+      channels: [ 'member-login-history' ]
+    member_login_history_rotating_file:
+      type: rotating_file
+      max_files: 60
+      path: '%kernel.logs_dir%/%kernel.environment%/member-login-history.log'
+      formatter: member_login_history.log.formatter.line
+      level: debug
+
+services:
+  member_login_history.log.formatter.line:
+    class: Monolog\Formatter\LineFormatter
+    arguments:
+      - "[%%datetime%%] %%channel%%.%%level_name%% %%message%% %%context%% [%%extra.http_method%%, %%extra.url%%, %%extra.ip%%, %%extra.referrer%%, %%extra.user_agent%%]\n"
